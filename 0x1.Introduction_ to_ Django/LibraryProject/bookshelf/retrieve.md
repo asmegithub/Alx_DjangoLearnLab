@@ -1,7 +1,7 @@
 
 # Command to retrive data:
 >>> from bookshelf.models import Book
->>> b=Book.objects.filter(title='1984')
+>>> b=Book.objects.get(title='1984')
 >>> print(b)
 
 # output: 
