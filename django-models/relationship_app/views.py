@@ -11,10 +11,10 @@ def list_books(request):
     context = {
         'books': books
     }
-    return render(request, 'list_books.html', context)
+    return render(request, './templates/list_books.html', context)
 
 
 class LibraryDetailView(DetailView):
     model = Library
-    template_name = 'library_detail.html'
+    template_name = './templates/library_detail.html'
     context_object_name = 'library'
