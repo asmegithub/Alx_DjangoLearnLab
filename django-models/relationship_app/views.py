@@ -1,9 +1,7 @@
 from django.shortcuts import render
-from models import Author, Book, Library, Librarian
-from django.views.generic import ListView, DetailView
-from django.shortcuts import render
-from django.views.generic import ListView, DetailView
-from .models import Author, Book, Library, Librarian
+from django.views.generic import DetailView
+from models import Book
+from .models import Library
 
 
 def index(request):
@@ -16,5 +14,5 @@ def index(request):
 
 class LibraryDetailView(DetailView):
     model = Library
-    template_name = 'library_detail.html'
+    template_name = 'relationship_app/library_detail.html'
     context_object_name = 'library'
