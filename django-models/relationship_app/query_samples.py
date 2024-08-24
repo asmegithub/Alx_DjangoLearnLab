@@ -7,7 +7,7 @@ print(books_by_author)
 
 # List all books in a library
 library = Library.objects.get(name="Main Library")
-books_in_library = Book.objects.filter(library=library)
+books_in_library = library.books.all()  # Add this line
 print(books_in_library)
 
 # Retrieve the librarian for a library
