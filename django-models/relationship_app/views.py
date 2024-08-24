@@ -11,7 +11,7 @@ def index(request):
     context = {
         'books': books
     }
-    return render(request, 'list_books.html', context)
+    return render(request, 'relationship_app/list_books.html', context)
 
 
 class LibraryDetailView(DetailView):
