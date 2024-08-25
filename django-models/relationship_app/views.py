@@ -1,15 +1,16 @@
 from django.shortcuts import render, redirect
 from django.views.generic import DetailView
-from .models import Book, Library
-from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.views import LoginView
+
+from .models import Book
+from .models import Library
 
 
 def list_books(request):
     books = Book.objects.all()
     context = {'books': books}
-    return render(request, 'relationship_applist_books.html', context)
+    return render(request, './templates/list_books.html', context)
 
 
 class LibraryDetailView(DetailView):
