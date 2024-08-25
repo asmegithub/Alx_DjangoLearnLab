@@ -20,7 +20,7 @@ class LibraryDetailView(DetailView):
 
 
 class LoginView(LoginView):
-    template_name = './templates/users/login.html'
+    template_name = './templates/'
 
 
 def register(request):
