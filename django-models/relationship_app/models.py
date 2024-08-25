@@ -22,3 +22,11 @@ class Libray(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Librarian(models.Model):
+    name = models.CharField(max_length=255)
+    library = models.OneToOneField(Libray, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.name
