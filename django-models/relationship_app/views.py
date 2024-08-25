@@ -9,17 +9,17 @@ from django.contrib.auth.views import LoginView
 def list_books(request):
     books = Book.objects.all()
     context = {'books': books}
-    return render(request, 'book_list.html', context)
+    return render(request, './templates/book_list.html', context)
 
 
 class LibraryDetailView(DetailView):
     model = Library
-    template_name = 'library_detail.html'
+    template_name = './templates/library_detail.html'
     context_object_name = 'library'
 
 
 class LoginView(LoginView):
-    template_name = 'login.html'
+    template_name = './templates/login.html'
 
 
 def register(request):
@@ -31,4 +31,4 @@ def register(request):
             return redirect('list_books')
     else:
         form = UserCreationForm()
-    return render(request, 'register.html', {'form': form})
+    return render(request, 'templates/register.html', {'form': form})
