@@ -40,6 +40,9 @@ INSTALLED_APPS = [
     'bookshelf.apps.BookshelfConfig',
     'relationship_app',
 ]
+LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = '/'  # Where to redirect after successful login
+LOGOUT_REDIRECT_URL = '/'  # Where to redirect after logout
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
