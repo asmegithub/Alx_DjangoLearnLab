@@ -15,10 +15,13 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
+from django.shortcuts import redirect
 from django.urls import path, include
 
 urlpatterns = [
-    path('relationship_app/', include('relationship_app.urls')),
-    path('bookshelf', include('bookshelf.urls')),
+    # Redirect root URL to /bookshelf/
+    path('', lambda request: redirect('bookshelf/', permanent=False)),
+
+    path('bookshelf/', include('bookshelf.urls')),
     path('admin/', admin.site.urls),
 ]
