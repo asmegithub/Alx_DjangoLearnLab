@@ -21,6 +21,7 @@ from django.urls import path, include
 urlpatterns = [
     # Redirect root URL to /bookshelf/
     path('', lambda request: redirect('bookshelf/', permanent=False)),
+    path('relationship_app/', include('relationship_app.urls')),
 
     path('bookshelf/', include('bookshelf.urls')),
     path('admin/', admin.site.urls),
