@@ -9,7 +9,7 @@ from django.contrib.auth.views import LoginView
 def list_books(request):
     books = Book.objects.all()
     context = {'books': books}
-    return render(request, 'templates/list_books.html', context)
+    return render(request, 'relationship_applist_books.html', context)
 
 
 class LibraryDetailView(DetailView):
