@@ -37,9 +37,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'bookshelf.apps.BookshelfConfig',
+    'bookshelf',
     'relationship_app',
-    'authusers'
+    # 'authusers'
 ]
 LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = '/'  # Where to redirect after successful login
@@ -128,4 +128,4 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-AUTH_USER_MODEL = 'authusers.CustomUser'
+AUTH_USER_MODEL = 'bookshelf.CustomUser'
