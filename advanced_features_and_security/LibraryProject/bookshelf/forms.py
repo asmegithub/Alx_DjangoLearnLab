@@ -17,7 +17,7 @@ class CustomUserCreationForm(UserCreationForm):
                   'profile_photo', 'password1', 'password2')
 
 
-class CustomBookForm(forms.ModelForm):
+class ExampleForm(forms.ModelForm):
     class Meta:
         model = Book
         fields = ['title', 'author', 'publication_year']
