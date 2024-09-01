@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
+from django.contrib.auth.decorators import login_required, permission_required
 from .models import Book
 from .forms import CustomBookForm
 
@@ -20,6 +21,8 @@ def view_book(request, book_id):
     return render(request, 'bookshelf/view_book.html', {'book': book})
 
 
+@login_required
+@permission_required('bookshelf.can_create', raise_exception=True)
 def create_book(request):
     if request.method == 'POST':
         form = CustomBookForm(request.POST)
@@ -30,6 +33,8 @@ def create_book(request):
     return render(request, 'bookshelf/create_book.html', {'form': form})
 
 
+@login_required
+@permission_required('bookshelf.can_edit', raise_exception=True)
 def edit_book(request, book_id):
     book = Book.objects.get(id=book_id)
     if request.method == 'POST':
@@ -41,6 +46,8 @@ def edit_book(request, book_id):
     return render(request, 'bookshelf/edit_book.html', {'form': form})
 
 
+@login_required
+@permission_required('bookshelf.can_delete', raise_exception=True)
 def delete_book(request, book_id):
     book = Book.objects.get(id=book_id)
     if request.method == 'POST':
