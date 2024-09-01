@@ -20,6 +20,8 @@ def view_book(request, book_id):
     book = Book.objects.get(id=book_id)
     return render(request, 'bookshelf/view_book.html', {'book': book})
 
+# this is to protect unautheticated user from creating Book instatnce
+
 
 @login_required
 @permission_required('bookshelf.can_create', raise_exception=True)
@@ -33,6 +35,7 @@ def create_book(request):
     return render(request, 'bookshelf/create_book.html', {'form': form})
 
 
+# this is to prevent unathenticated user from editing book instance
 @login_required
 @permission_required('bookshelf.can_edit', raise_exception=True)
 def edit_book(request, book_id):
@@ -44,6 +47,8 @@ def edit_book(request, book_id):
     else:
         form = CustomBookForm(instance=book)
     return render(request, 'bookshelf/edit_book.html', {'form': form})
+
+# this is to prevent un authenticated user from deleting a book instance!
 
 
 @login_required
