@@ -3,25 +3,23 @@ from django.db import models
 
 
 class CustomUserManager(BaseUserManager):
-    def create_user(self, username, password, date_of_birth, profile_photo):
+    def create_user(self, username, password=None, date_of_birth=None, profile_photo=None, **extra_fields):
         if not username:
             raise ValueError("Username is required")
         user = self.model(
-            username=username, date_of_birth=date_of_birth, profile_photo=profile_photo)
+            username=username, date_of_birth=date_of_birth, profile_photo=profile_photo, **extra_fields)
         user.set_password(password)
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, username, password, date_of_birth, profile_photo):
-        user = self.create_user(
-            username, password, date_of_birth, profile_photo)
-        user.is_staff = True
-        user.is_superuser = True
-        user.save(using=self._db)
+    def create_superuser(self, username, password=None, date_of_birth=None, profile_photo=None, **extra_fields):
+        extra_fields.setdefault('is_staff', True)
+        extra_fields.setdefault('is_superuser', True)
+        return self.create_user(username, password, date_of_birth, profile_photo, **extra_fields)
 
 
 class CustomUser(AbstractUser):
-    date_of_birth = models.DateField()
+    date_of_birth = models.DateField(null=True, blank=True)
     profile_photo = models.ImageField(
         upload_to='profile_photos/', null=True, blank=True)
 
@@ -35,5 +33,10 @@ class Book(models.Model):
     author = models.CharField(max_length=100)
     publication_year = models.IntegerField()
 
-    def __str__(self):
-        return f"title= {self.title} author= {self.author} publication year= {self.publication_year}"
+    class Meta:
+        permissions = [
+            ('can_view', 'Can view books'),
+            ('can_create', 'Can add books'),
+            ('can_edit', 'Can edit books'),
+            ('can_delete', 'Can delete books'),
+        ]

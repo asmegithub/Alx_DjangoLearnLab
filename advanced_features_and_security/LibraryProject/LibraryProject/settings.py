@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     # 'authusers'
 ]
 LOGIN_URL = 'login'
-LOGIN_REDIRECT_URL = '/'  # Where to redirect after successful login
+LOGIN_REDIRECT_URL = '/bookshelf'  # Where to redirect after successful login
 LOGOUT_REDIRECT_URL = '/'  # Where to redirect after logout
 
 MIDDLEWARE = [

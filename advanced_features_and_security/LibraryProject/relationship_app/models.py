@@ -37,9 +37,9 @@ class Librarian(models.Model):
 
 class UserProfile(models.Model):
     ROLE_CHOICES = (
-        ('Admin', 'Admin'),
-        ('Librarian', 'Librarian'),
-        ('Member', 'Member'),
+        ('admin', 'Admin'),
+        ('librarian', 'Librarian'),
+        ('member', 'Member'),
     )
 
     user = models.OneToOneField(
