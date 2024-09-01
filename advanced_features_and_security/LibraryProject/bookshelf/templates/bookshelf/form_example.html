@@ -2,14 +2,15 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Register</title>
+    <title>Forms as Example</title>
 </head>
 <body>
-    <h1>Register</h1>
+    <h1>Form Example</h1>
     <form method="post">
+        <!-- this is to protect cross site request forgery  -->
         {% csrf_token %}
         {{ form.as_p }}
-        <button type="submit">Register</button>
+        <button type="submit">submit</button>
     </form>
 </body>
 </html>

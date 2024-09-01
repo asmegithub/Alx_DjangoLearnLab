@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Register</title>
+</head>
+<body>
+   <h2>List of books</h2>
+   <ul>
+         {% for book in books %}
+              <li>{{ book.title }} by {{ book.author }}</li>
+         {% endfor %}
+   </ul>
+</body>
+</html>
