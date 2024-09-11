@@ -1,6 +1,6 @@
 from rest_framework import generics, mixins
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated, IsAdminUser
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
 from datetime import datetime
 
 from .models import Book
@@ -37,7 +37,7 @@ class CreateView(mixins.CreateModelMixin, generics.GenericAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
     # this is to make sure that only authenticated admin users can access this view
-    permission_classes = [IsAuthenticated, IsAdminUser]
+    permission_classes = [IsAuthenticated, IsAuthenticatedOrReadOnly]
 
     def post(self, request, *args, **kwargs):
         # this is to make sure that the publication year is not greater than the current year. Similar validation has been done in the serializer but it is always good to have it in the view as well
@@ -52,7 +52,7 @@ class UpdateView(mixins.UpdateModelMixin, generics.GenericAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
     # this is to make sure that only authenticated admin users can access this view
-    permission_classes = [IsAuthenticated, IsAdminUser]
+    permission_classes = [IsAuthenticated, IsAuthenticatedOrReadOnly]
 
     def put(self, request, *args, **kwargs):
         # this is to make sure that the publication year is not greater than the current year. Similar validation has been done in the serializer but it is always good to have it in the view as well
@@ -65,7 +65,7 @@ class DeleteView(mixins.DestroyModelMixin, generics.GenericAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
     # this is to make sure that only authenticated admin users can access this view
-    permission_classes = [IsAuthenticated, IsAdminUser]
+    permission_classes = [IsAuthenticated, IsAuthenticatedOrReadOnly]
 
     def delete(self, request, *args, **kwargs):
         return self.destroy(request, *args, **kwargs)
