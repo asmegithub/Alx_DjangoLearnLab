@@ -25,7 +25,7 @@ class ListView(mixins.ListModelMixin, generics.GenericAPIView):
     # ordering book by title and publication year
     ordering_fields = ['title', 'publication_year']
     # searching book by title and publication year
-    search_fields = ['title', 'publication_year']
+    search_fields = ['title', 'author__name', 'publication_year']
 
     # this is to make sure that only authenticated users can access this view
     # permission_classes = [IsAuthenticated]

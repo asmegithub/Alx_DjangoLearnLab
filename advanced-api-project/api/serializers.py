@@ -5,7 +5,8 @@ from .models import Book, Author
 
 class BookSerializer(serializers.ModelSerializer):
     # Serializer for the Book model
-    auth = serializers.StringRelatedField(read_only=True)
+    author = serializers.CharField(
+        source='author.name', read_only=True)  # Show author's name only
 
     class Meta:
         model = Book
