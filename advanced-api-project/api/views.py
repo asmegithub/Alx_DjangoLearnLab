@@ -1,6 +1,7 @@
 from rest_framework import generics, mixins
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
+from rest_framework import filters
 from datetime import datetime
 
 from .models import Book
@@ -10,13 +11,22 @@ from .serializers import BookSerializer
 
 
 class ListView(mixins.ListModelMixin, generics.GenericAPIView):
-    queryset = Book.objects.all()
+    # queryset = Book.objects.all()
     serializer_class = BookSerializer
+    # filtering and ordering by title and publication year
+    filter_backends = [filters.SearchFilter, filters.OrderingFilter,]
+    search_fields = ['title', 'publication_year']
     # this is to make sure that only authenticated users can access this view
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
+
+    # this is to filter the books by their publication_year and return only the books that were published in the current year
+    def get_queryset(self):
+        queryset = Book.objects.all().filter(publication_year=datetime.now().year)
+        return queryset
 
     def get(self, request, *args, **kwargs):
         return self.list(request, *args, **kwargs)
+
 
 # Seeing the detail of a book
 

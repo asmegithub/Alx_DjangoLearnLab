@@ -5,6 +5,7 @@ from .models import Book, Author
 
 class BookSerializer(serializers.ModelSerializer):
     # Serializer for the Book model
+    auth = serializers.StringRelatedField(read_only=True)
 
     class Meta:
         model = Book
