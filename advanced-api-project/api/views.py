@@ -2,7 +2,7 @@ from rest_framework import generics, mixins
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
 from rest_framework import filters
-from django_filters.rest_framework import DjangoFilterBackend
+from django_filters import rest_framework
 from datetime import datetime
 
 from .models import Book
@@ -18,7 +18,7 @@ class ListView(mixins.ListModelMixin, generics.GenericAPIView):
     # filtering and ordering by title and publication year
     # filter_backends = [filters.SearchFilter,
     #                    filters.OrderingFilter]
-    filter_backends = [DjangoFilterBackend,
+    filter_backends = [rest_framework.DjangoFilterBackend,
                        filters.OrderingFilter, filters.SearchFilter]
     # filtering book
     filterset_class = BookFilter
