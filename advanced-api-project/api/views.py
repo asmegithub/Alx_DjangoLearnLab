@@ -2,27 +2,38 @@ from rest_framework import generics, mixins
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
 from rest_framework import filters
+from django_filters.rest_framework import DjangoFilterBackend
 from datetime import datetime
 
 from .models import Book
 from .serializers import BookSerializer
+from .filters import BookFilter
 
 # this view is to list all the books
 
 
 class ListView(mixins.ListModelMixin, generics.GenericAPIView):
-    # queryset = Book.objects.all()
+    queryset = Book.objects.all()
     serializer_class = BookSerializer
     # filtering and ordering by title and publication year
-    filter_backends = [filters.SearchFilter, filters.OrderingFilter,]
+    # filter_backends = [filters.SearchFilter,
+    #                    filters.OrderingFilter]
+    filter_backends = [DjangoFilterBackend,
+                       filters.OrderingFilter, filters.SearchFilter]
+    # filtering book
+    filterset_class = BookFilter
+    # ordering book by title and publication year
+    ordering_fields = ['title', 'publication_year']
+    # searching book by title and publication year
     search_fields = ['title', 'publication_year']
+
     # this is to make sure that only authenticated users can access this view
     # permission_classes = [IsAuthenticated]
 
     # this is to filter the books by their publication_year and return only the books that were published in the current year
-    def get_queryset(self):
-        queryset = Book.objects.all().filter(publication_year=datetime.now().year)
-        return queryset
+    # def get_queryset(self):
+    #     queryset = Book.objects.all().filter(publication_year=datetime.now().year)
+    #     return queryset
 
     def get(self, request, *args, **kwargs):
         return self.list(request, *args, **kwargs)
