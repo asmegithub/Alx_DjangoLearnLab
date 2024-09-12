@@ -28,7 +28,7 @@ class ListView(mixins.ListModelMixin, generics.GenericAPIView):
     search_fields = ['title', 'author__name', 'publication_year']
 
     # this is to make sure that only authenticated users can access this view
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
 
     # this is to filter the books by their publication_year and return only the books that were published in the current year
     # def get_queryset(self):
@@ -80,6 +80,12 @@ class UpdateView(mixins.UpdateModelMixin, generics.GenericAPIView):
         if request.data.get('publication_year') > datetime.now().year:
             return Response({'error': 'Publication year must be before or equal to the current year'}, status=400)
         return self.update(request, *args, **kwargs)
+
+    def patch(self, request, *args, **kwargs):
+        # Validate the publication year for partial updates
+        if request.data.get('publication_year') and request.data.get('publication_year') > datetime.now().year:
+            return Response({'error': 'Publication year must be before or equal to the current year'}, status=400)
+        return self.partial_update(request, *args, **kwargs)
 
 
 class DeleteView(mixins.DestroyModelMixin, generics.GenericAPIView):

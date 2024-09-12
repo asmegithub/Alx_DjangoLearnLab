@@ -4,9 +4,10 @@ from .models import Book, Author
 
 
 class BookSerializer(serializers.ModelSerializer):
-    # Serializer for the Book model
-    author = serializers.CharField(
-        source='author.name', read_only=True)  # Show author's name only
+    # Display author's name when retrieving data
+    author_name = serializers.CharField(source='author.name', read_only=True)
+    # Allow setting author by ID when creating/updating
+    author = serializers.PrimaryKeyRelatedField(queryset=Author.objects.all())
 
     class Meta:
         model = Book
