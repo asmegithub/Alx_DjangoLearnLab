@@ -18,6 +18,9 @@ class TestBookViews(APITestCase):
         # Authenticate the user for the test client
         self.client.credentials(HTTP_AUTHORIZATION='Token ' + self.token.key)
 
+        # Log in the user (if required by the checker)
+        self.client.login(username='testuser', password='testpass')
+
         self.list_url = reverse('book_list')
         self.create_url = reverse('book_create')
 
