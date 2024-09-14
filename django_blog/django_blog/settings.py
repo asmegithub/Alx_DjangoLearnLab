@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'blog',  # Add the blog app to the list of installed apps
 ]
 
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
