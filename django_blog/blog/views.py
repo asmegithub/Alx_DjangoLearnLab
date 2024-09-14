@@ -9,7 +9,7 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 # rest_framework's generic views
 from rest_framework.generics import ListAPIView, RetrieveAPIView, CreateAPIView, UpdateAPIView, DestroyAPIView
-from rest_framework.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from rest_framework.permissions import IsAuthenticated
 
 from .forms import CustomUserCreationForm, UserUpdateForm, UserProfileUpdateForm, PostForm, PostUpdateForm
