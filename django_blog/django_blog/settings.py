@@ -40,6 +40,11 @@ INSTALLED_APPS = [
     'blog',  # Add the blog app to the list of installed apps
 ]
 
+# Handling redirection after login, logout and registration
+LOGIN_REDIRECT_URL = 'profile'
+LOGOUT_REDIRECT_URL = 'login'
+REGISTER_REDIRECT_URL = 'login'
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
