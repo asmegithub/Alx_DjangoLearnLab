@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Delete Post</title>
+    {% load static%}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
+  </head>
+  <body>
+    <header>
+      <nav>
+        <ul>
+          <li><a href="{% url 'home' %}">Home</a></li>
+          <li><a href="{% url 'post_list' %}">All Posts</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <h1>Delete Post</h1>
+    <p>Are you sure you want to delete the post "{{ object.title }}"?</p>
+    <form method="post">
+      {% csrf_token %}
+      <button type="submit">Confirm Delete</button>
+      <a href="{% url 'post_detail' object.pk %}">Cancel</a>
+    </form>
+
+    <footer>
+      <p>&copy; 2024 Django Blog</p>
+    </footer>
+  </body>
+</html>

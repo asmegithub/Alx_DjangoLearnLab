@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Blog Posts</title>
+    {% load static%}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
+  </head>
+  <body>
+    <header>
+      <nav>
+        <ul>
+          <li><a href="{% url 'home' %}">Home</a></li>
+          <li><a href="{% url 'post_create' %}">Create Post</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <h1>All Blog Posts</h1>
+    <ul>
+      {% for post in object_list %}
+      <li style="padding: 25px">
+        <a href="{% url 'post_detail' post.pk %}" style="font-size: 1.3rem"
+          >{{ post.title }}</a
+        >
+        <p style="font-size: 0.85rem; padding: 10px 10px">{{post.content}}</p>
+        {% if user.is_authenticated %} {% if user == post.author %}
+        <a href="{% url 'post_update' post.pk %}">Edit</a>
+        <a href="{% url 'post_delete' post.pk %}">Delete</a>
+        {% endif %} {% endif %}
+      </li>
+      {% endfor %}
+    </ul>
+
+    <footer>
+      <p>&copy; 2024 Django Blog</p>
+    </footer>
+  </body>
+</html>

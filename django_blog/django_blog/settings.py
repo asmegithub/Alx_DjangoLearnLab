@@ -37,7 +37,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # local apps
     'blog',  # Add the blog app to the list of installed apps
+    # third party apps
+    'rest_framework',
 ]
 
 # Handling redirection after login, logout and registration

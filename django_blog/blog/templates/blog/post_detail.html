@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{ object.title }}</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
+  </head>
+  <body>
+    <header>
+      <nav>
+        <ul>
+          <li><a href="{% url 'home' %}">Home</a></li>
+          <li><a href="{% url 'post_list' %}">All Posts</a></li>
+          {% if user.is_authenticated %} {% if user == object.author %}
+          <li><a href="{% url 'post_update' object.pk %}">Edit</a></li>
+          <li><a href="{% url 'post_delete' object.pk %}">Delete</a></li>
+          {% endif %} {% endif %}
+        </ul>
+      </nav>
+    </header>
+
+    <h1>{{ object.title }}</h1>
+    <p>{{ object.content }}</p>
+    <p>Published on: {{ object.published_date }}</p>
+
+    <footer>
+      <p>&copy; 2024 Django Blog</p>
+    </footer>
+  </body>
+</html>

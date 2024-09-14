@@ -1,7 +1,7 @@
 from django.contrib.auth.forms import UserCreationForm
 from django import forms
 from django.contrib.auth.models import User
-from .models import UserProfile
+from .models import UserProfile, Post
 
 
 class UserUpdateForm(forms.ModelForm):
@@ -25,3 +25,15 @@ class CustomUserCreationForm(UserCreationForm):
         model = UserCreationForm.Meta.model
         # for fields in defualt built-in User model and are not visible by defualt in UserCreationForm, you can add them here without any need of redifining it above.
         fields = UserCreationForm.Meta.fields + ('email', 'bio')
+
+
+class PostForm(forms.ModelForm):
+    class Meta:
+        model = Post
+        fields = ['title', 'content']
+
+
+class PostUpdateForm(forms.ModelForm):
+    class Meta:
+        model = Post
+        fields = ['title', 'content']
