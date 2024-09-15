@@ -22,8 +22,7 @@ urlpatterns = [
     path('comments/', CommentListView.as_view(), name='comment_list'),
     #     unneccessary path for comment detail
     path('comments/<int:pk>/', CommentDetailView.as_view(), name='comment_detail'),
-
-    path('posts/<int:post_id>/comments/new/<int:pk>',
+    path('post/<int:pk>/comments/new/',
          CommentCreateView, name='comment_new'),
     path('comment/<int:pk>/update/',
          CommentUpdateView.as_view(), name='comment_update'),
