@@ -160,7 +160,7 @@ class Post_Delete(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 
 
 @login_required
-def post_comment(request, pk):
+def CommentCreateView(request, pk):
     if request.method == 'POST':
         form = CommentForm(request.POST)
         if form.is_valid():
@@ -176,7 +176,7 @@ def post_comment(request, pk):
         return render(request, 'blog/comment_form.html', {'form': form})
 
 
-class Comment_List(ListView):
+class CommentListView(ListView):
     model = Comment
     template_name = 'blog/comment_list.html'
     context_object_name = 'comments'
@@ -188,14 +188,15 @@ class Comment_List(ListView):
     #     return context
 
 
-class Comment_Detail(DetailView):
+class CommentDetailView(DetailView):
     model = Comment
     template_name = 'blog/comment_detail.html'
 
-
 # for class based views, use method_decorator to apply login_required decorator to class based views
+
+
 @method_decorator(login_required, name='dispatch')
-class Comment_Update(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+class CommentUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Comment
     template_name = 'blog/comment_form.html'
     fields = ['content']
@@ -213,7 +214,7 @@ class Comment_Update(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 
 
 @method_decorator(login_required, name='dispatch')
-class Comment_Delete(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+class CommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Comment
     template_name = 'blog/comment_delete.html'
     success_url = reverse_lazy('comment_list')
