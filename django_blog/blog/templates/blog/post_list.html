@@ -25,8 +25,13 @@
         >
         <p style="font-size: 0.85rem; padding: 10px 10px">{{post.content}}</p>
         {% if user.is_authenticated %} {% if user == post.author %}
-        <a href="{% url 'post_update' post.pk %}">Edit</a>
-        <a href="{% url 'post_delete' post.pk %}">Delete</a>
+        <a style="padding: 10px" href="{% url 'post_update' post.pk %}">Edit</a>
+        <a style="padding: 10px" href="{% url 'post_delete' post.pk %}"
+          >Delete</a
+        >
+        <a style="padding: 10px" href="{% url 'post_detail' post.pk %}"
+          >View Comments</a
+        >
         {% endif %} {% endif %}
       </li>
       {% endfor %}

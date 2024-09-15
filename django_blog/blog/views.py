@@ -182,10 +182,11 @@ class CommentListView(ListView):
     context_object_name = 'comments'
     ordering = ['-created_at']
 
-    # def get_context_data(self, **kwargs):
-    #     context = super().get_context_data(**kwargs)
-    #     context['post'] = get_object_or_404(Post, pk=self.kwargs.get('pk'))
-    #     return context
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['post'] = get_object_or_404(
+            Post, pk=self.kwargs.get('pk'))
+        return context
 
 
 class CommentDetailView(DetailView):
@@ -201,6 +202,10 @@ class CommentUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     template_name = 'blog/comment_form.html'
     fields = ['content']
     success_url = reverse_lazy('comment_list')
+
+    def get_object(self, queryset=None):
+        # Get the comment object based on comment_pk
+        return Comment.objects.get(pk=self.kwargs.get('pk'))
 
     def test_func(self):
         comment = self.get_object()
