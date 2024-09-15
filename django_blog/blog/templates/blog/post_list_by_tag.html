@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Posts by Tag</title>
+  </head>
+  <body>
+    <h1>Posts tagged with "{{ view.kwargs.tag_slug }}"</h1>
+
+    <ul>
+      {% for post in object_list %}
+      <li>
+        <a href="{% url 'post_detail' post.pk %}">{{ post.title }}</a>
+        <p>{{ post.content|slice:":200" }}...</p>
+      </li>
+      {% empty %}
+      <li>No posts found for this tag.</li>
+      {% endfor %}
+    </ul>
+
+    <a href="{% url 'post_list' %}">Back to all posts</a>
+  </body>
+</html>
