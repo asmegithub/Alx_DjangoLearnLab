@@ -4,7 +4,7 @@
   <li>
     <strong>{{ comment.author }}:</strong>
     {{ comment.content }}
-    <a href="{% url 'post_detail' pk=comment.post.pk %}">View Post</a>
+    <a href="{% url 'post_detail' pk=comment.post.pk %}">View Post Detail</a>
   </li>
   {% empty %}
   <li>No comments yet.</li>

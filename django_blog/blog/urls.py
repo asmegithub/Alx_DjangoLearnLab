@@ -17,15 +17,16 @@ urlpatterns = [
     path('post/new/', post_create, name='post_new'),
     path('post/<int:pk>/update/', Post_Update.as_view(), name='post_update'),
     path('post/<int:pk>/delete/', Post_Delete.as_view(), name='post_delete'),
+    path('post/<int:pk>/comment/', CommentCreateView, name='comment_new'),
     # Url for comments
-    path('post/<int:post_pk> /comments/new',
-         CommentCreateView, name='comment_new'),
+    path('comments/', CommentListView.as_view(), name='comment_list'),
+    #     unneccessary path for comment detail
+    path('comments/<int:pk>/', CommentDetailView.as_view(), name='comment_detail'),
 
-    path('post/<int:pk>/comments/', CommentListView.as_view(), name='comment_list'),
-    path('post/<int:post_pk>/comments/<int:comment_pk>/',
-         CommentDetailView.as_view(), name='comment_detail'),
-    path('post/<int:post_pk>/comments/<int:comment_pk>/update/',
+    path('post/<int:post_pk>/comment/new/<int:pk>',
+         CommentCreateView, name='comment_new'),
+    path('comment/<int:pk>/update/',
          CommentUpdateView.as_view(), name='comment_update'),
-    path('post/<int:post_pk>/comments/<int:comment_pk>/delete/',
+    path('comment/<int:pk>/delete/',
          CommentDeleteView.as_view(), name='comment_delete'),
 ]
