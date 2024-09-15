@@ -36,6 +36,12 @@ class PostForm(forms.ModelForm):
     class Meta:
         model = Post
         fields = ['title', 'content', 'tags']
+        # You can add widgets to customize other fields if needed
+    widgets = {
+        'title': forms.TextInput(attrs={'class': 'form-control'}),
+        'content': forms.Textarea(attrs={'class': 'form-control'}),
+        # Add more widgets if needed
+    }
 
 
 class PostUpdateForm(forms.ModelForm):
