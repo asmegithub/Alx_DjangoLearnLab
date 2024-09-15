@@ -1,6 +1,8 @@
 from django.contrib.auth.forms import UserCreationForm
 from django import forms
 from django.contrib.auth.models import User
+
+from taggit.forms import TagField
 from .models import UserProfile, Post, Comment
 
 
@@ -28,15 +30,19 @@ class CustomUserCreationForm(UserCreationForm):
 
 
 class PostForm(forms.ModelForm):
+    tags = TagField()  # Add this line for tags
+
     class Meta:
         model = Post
-        fields = ['title', 'content']
+        fields = ['title', 'content', 'tags']
 
 
 class PostUpdateForm(forms.ModelForm):
+    tags = TagField()  # Add this line for tags
+
     class Meta:
         model = Post
-        fields = ['title', 'content']
+        fields = ['title', 'content', 'tags']
 
 
 class CommentForm(forms.ModelForm):
@@ -54,3 +60,7 @@ class CommentForm(forms.ModelForm):
             raise forms.ValidationError(
                 'Content must be at least 10 characters long.')
         return content
+
+
+class SearchForm(forms.Form):
+    query = forms.CharField(max_length=100, required=False)

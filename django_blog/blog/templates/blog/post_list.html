@@ -17,6 +17,15 @@
     </header>
 
     <h1>All Blog Posts</h1>
+    <form method="get" action="{% url 'search' %}">
+      <input
+        type="text"
+        name="q"
+        placeholder="Search..."
+        value="{{ request.GET.q }}"
+      />
+      <button type="submit">Search</button>
+    </form>
     <ul>
       {% for post in object_list %}
       <li style="padding: 25px">

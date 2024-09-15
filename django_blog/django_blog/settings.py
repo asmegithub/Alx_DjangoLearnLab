@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'blog',  # Add the blog app to the list of installed apps
     # third party apps
     'rest_framework',
+    'taggit',
 ]
 
 # Handling redirection after login, logout and registration
