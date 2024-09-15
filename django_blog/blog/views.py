@@ -10,11 +10,10 @@ from django.views.generic import ListView, DetailView, CreateView, UpdateView, D
 # rest_framework's generic views
 from rest_framework.generics import ListAPIView, RetrieveAPIView, CreateAPIView, UpdateAPIView, DestroyAPIView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from rest_framework.permissions import IsAuthenticated
 
-from .forms import CustomUserCreationForm, UserUpdateForm, UserProfileUpdateForm, PostForm, PostUpdateForm
+from .forms import CustomUserCreationForm, UserUpdateForm, UserProfileUpdateForm, PostForm, CommentForm
 
-from .models import Post
+from .models import Post, Comment
 
 
 def home(request):
@@ -73,6 +72,24 @@ class Post_List(ListView):
 class Post_Detail(DetailView):
     model = Post
     template_name = 'blog/post_detail.html'
+    # Handling comments in Post_Detail view
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['comments'] = self.get_object().comments.all()
+        context['form'] = CommentForm()
+        return context
+
+    def post(self, request, *args, **kwargs):
+        post = self.get_object()
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.author = request.user
+            comment.post = post
+            comment.save()
+            return redirect('post_detail', pk=post.pk)
+        return self.get(request, *args, form=form)
 
 
 @login_required
@@ -106,10 +123,13 @@ class Post_Update(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         if post.author != self.request.user:
             raise PermissionDenied
         return post
+# this allow only the author of the post to update the post
+# if the user is not the author of the post, PermissionDenied will be raised
 
     def test_func(self):
         post = self.get_object()
         return self.request.user == post.author
+# if the user is authenticated but not the author of the post, this method will be called
 
     def handle_no_permission(self):
         if self.request.user.is_authenticated:
@@ -137,3 +157,73 @@ class Post_Delete(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 
     # Develop a view that allows authenticated users to view and edit their profile details. This view should handle POST requests to update user information.
     # Ensure the user can change their email and optionally extend the user model to include more fields like a profile picture or bio.
+
+
+@login_required
+def post_comment(request, pk):
+    if request.method == 'POST':
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.author = request.user
+            comment.post = get_object_or_404(Post, pk=pk)
+            comment.save()
+            return redirect('post_detail', pk=pk)
+        else:
+            return render(request, 'blog/comment_form.html', {'form': form})
+    else:
+        form = CommentForm()
+        return render(request, 'blog/comment_form.html', {'form': form})
+
+
+class Comment_List(ListView):
+    model = Comment
+    template_name = 'blog/comment_list.html'
+    context_object_name = 'comments'
+    ordering = ['-created_at']
+
+    # def get_context_data(self, **kwargs):
+    #     context = super().get_context_data(**kwargs)
+    #     context['post'] = get_object_or_404(Post, pk=self.kwargs.get('pk'))
+    #     return context
+
+
+class Comment_Detail(DetailView):
+    model = Comment
+    template_name = 'blog/comment_detail.html'
+
+
+# for class based views, use method_decorator to apply login_required decorator to class based views
+@method_decorator(login_required, name='dispatch')
+class Comment_Update(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = Comment
+    template_name = 'blog/comment_form.html'
+    fields = ['content']
+    success_url = reverse_lazy('comment_list')
+
+    def test_func(self):
+        comment = self.get_object()
+        return self.request.user == comment.author
+
+    def handle_no_permission(self):
+        if self.request.user.is_authenticated:
+            messages.error(
+                self.request, 'You do not have permission to update this comment')
+        return redirect('comment_list')
+
+
+@method_decorator(login_required, name='dispatch')
+class Comment_Delete(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+    model = Comment
+    template_name = 'blog/comment_delete.html'
+    success_url = reverse_lazy('comment_list')
+
+    def test_func(self):
+        comment = self.get_object()
+        return self.request.user == comment.author
+
+    def handle_no_permission(self):
+        if self.request.user.is_authenticated:
+            messages.error(
+                self.request, 'You do not have permission to delete this comment')
+        return redirect('comment_list')

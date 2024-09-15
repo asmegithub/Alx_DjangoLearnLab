@@ -1,0 +1,12 @@
+<h2>All Comments</h2>
+<ul>
+  {% for comment in comments %}
+  <li>
+    <strong>{{ comment.author }}:</strong>
+    {{ comment.content }}
+    <a href="{% url 'post_detail' pk=comment.post.pk %}">View Post</a>
+  </li>
+  {% empty %}
+  <li>No comments yet.</li>
+  {% endfor %}
+</ul>

@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block content %}
+  <h2>Comment by {{ comment.author.username }}</h2>
+
+  <p>{{ comment.content }}</p>
+  <p>Posted on: {{ comment.created_at }}</p>
+
+  <a href="{% url 'comment_list' %}">Back to all comments</a>
+{% endblock %}
