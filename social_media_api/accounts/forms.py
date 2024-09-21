@@ -8,4 +8,4 @@ from .models import CustomUser
 class CustomUserCreationForm(UserCreationForm):
     class Meta(UserCreationForm.Meta):
         model = CustomUser
-        fields = ('username', 'bio', 'profilePicture')
+        fields = ('username', 'bio', 'profile_picture')
