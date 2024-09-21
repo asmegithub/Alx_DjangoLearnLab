@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Profile</title>
+  </head>
+  <body>
+    <h1>{{user}}'s Profile</h1>
+    <ul>
+      <li>{{user.username}}</li>
+      <li>{{user.bio}}</li>
+      <li>{{user.profilePicture}}</li>
+    </ul>
+
+    <form action="{%url 'logout'%}" method="post">
+      {% csrf_token %}
+
+      <button type="submit">Logout</button>
+    </form>
+  </body>
+</html>

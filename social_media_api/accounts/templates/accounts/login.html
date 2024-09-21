@@ -1,0 +1,18 @@
+<!-- login.html -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Login</title>
+  </head>
+  <body>
+    <h1>Login</h1>
+    <form method="post">
+      {% csrf_token %} {{ form.as_p }}
+      <!-- {{ form.as_p }}: Automatically renders the form fields (based on the User model or whichever form you're passing to the template) with each field inside a paragraph (<p> tag).
+         -->
+      <button type="submit">Login</button>
+    </form>
+    <a href="{% url 'register' %}">Register</a>
+  </body>
+</html>
