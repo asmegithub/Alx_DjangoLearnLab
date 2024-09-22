@@ -24,7 +24,7 @@ def register(request):
 class LoginView(LoginView):
     template_name = 'accounts/login.html'
     # this allow an already authenticated user to be redirected to the login_redirect page
-    # redirect_authenticated_user = True
+    redirect_authenticated_user = True
 
 
 class ProfileDetailView(DetailView):
