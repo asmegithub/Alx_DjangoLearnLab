@@ -14,6 +14,8 @@ class CustomUserSerializer(serializers.Serializer):
     followers = serializers.PrimaryKeyRelatedField(
         many=True, read_only=True)
     password = serializers.CharField(write_only=True)
+    # posts = serializers.PrimaryKeyRelatedField(
+    #     many=True, read_only=True,queryset=Snippet.objects.all())
     # CRUD operations are defined here
 
     def create(self, validated_data):

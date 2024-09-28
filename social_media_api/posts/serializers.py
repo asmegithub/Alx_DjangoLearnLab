@@ -3,31 +3,25 @@ from rest_framework import serializers
 from .models import Post, Comment
 
 
-class PostSerializer(serializers.ModelSerializer):
-    # comments will be fetched as nested objects
-    comments = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
-    user = serializers.StringRelatedField(read_only=True)
-
-    class Meta:
-        model = Post
-        fields = '__all__'
-
-    def validate(self, data):
-        if 'title' in data and len(data['title']) < 5:
-            raise serializers.ValidationError(
-                "Title must be at least 5 characters long.")
-        return data
-
-
 class CommentSerializer(serializers.ModelSerializer):
-    user = serializers.StringRelatedField(read_only=True)
+    # ReadOnlyField means it does not allow clients to set or change the author through the API.
+    author = serializers.ReadOnlyField(source='author.username')
+    post = serializers.PrimaryKeyRelatedField(queryset=Post.objects.all())
+    # queryset argument is required unless it is read_only !!
 
     class Meta:
         model = Comment
-        fields = '__all__'
+        fields = ['id', 'content', 'post',
+                  'author', 'created_at', 'updated_at']
 
-    def validate(self, data):
-        if 'content' in data and len(data['content']) < 10:
-            raise serializers.ValidationError(
-                "Content must be at least 10 characters long.")
-        return data
+
+class PostSerializer(serializers.ModelSerializer):
+    # Nested serializer
+    comments = CommentSerializer(
+        many=True, read_only=True)
+    author = serializers.ReadOnlyField(source='author.username')
+
+    class Meta:
+        model = Post
+        fields = ['id', 'title', 'content', 'author',
+                  'comments', 'created_at', 'updated_at']
