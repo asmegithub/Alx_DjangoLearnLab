@@ -49,7 +49,7 @@ class PostViewSet(viewsets.ModelViewSet):
 # /posts/1/like
     @action(detail=True, methods=['get'])
     def like(self, request, pk=None):
-        post = get_object_or_404(Post, pk=pk)
+        post = generics.get_object_or_404(Post, pk=pk)
         likes, created = Like.objects.get_or_create(
             user=request.user, post=post)
         if created:
@@ -63,7 +63,7 @@ class PostViewSet(viewsets.ModelViewSet):
 
     @action(detail=True, methods=['get'])
     def unlike(self, request, pk=None):
-        post = get_object_or_404(Post, pk=pk)
+        post = generics.get_object_or_404(Post, pk=pk)
         user = request.user
         likes = Like.objects.filter(user=user, post=post)
         if likes.exists():
