@@ -9,7 +9,7 @@ class CustomUser(AbstractUser):
     # please note that when ever u make a relationship, it's better to have a related_name argument to avoid conflicts!!
     followers = models.ManyToManyField(
         'self', symmetrical=False, related_name='follower_users')
-    followings = models.ManyToManyField(
+    following = models.ManyToManyField(
         'self', symmetrical=False, related_name='following_users')
 
     def __str__(self):

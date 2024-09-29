@@ -48,7 +48,7 @@ def follow_user(request, user_id=None):
     # pk => primary key at CustomUser model, so you can't modify its name
     user_to_follow = get_object_or_404(CustomUser, pk=user_id)
     user_to_follow.followers.add(request.user)
-    request.user.followings.add(user_to_follow)
+    request.user.following.add(user_to_follow)
     return Response({'status': f'you followed {user_to_follow.username} !'})
 
 
@@ -56,7 +56,7 @@ def follow_user(request, user_id=None):
 def unfollow_user(request, user_id=None):
     user_to_unfollow = get_object_or_404(CustomUser, pk=user_id)
     user_to_unfollow.followers.remove(request.user)
-    request.user.followings.remove(user_to_unfollow)
+    request.user.following.remove(user_to_unfollow)
     return Response({'status': f'You unfollowed {user_to_unfollow.username} !'})
 
 
