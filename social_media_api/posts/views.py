@@ -34,7 +34,7 @@ class PostViewSet(viewsets.ModelViewSet):
         # get all the posts of the user and the users that the user is following
         user = request.user
         # feteching associated following users for the current user
-        following_users = user.followings.all()
+        following_users = user.following.all()
         # fetching the posts of the following users
         posts = Post.objects.filter(
             author__in=following_users).order_by('-created_at')
