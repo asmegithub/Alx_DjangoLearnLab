@@ -65,7 +65,7 @@ class PostViewSet(viewsets.ModelViewSet):
     def unlike(self, request, pk=None):
         post = generics.get_object_or_404(Post, pk=pk)
         user = request.user
-        likes = Like.objects.filter(post=post, user=user)
+        likes = Like.objects.filter(user=user, post=post)
         if likes.exists():
             likes.delete()
             notification = Notification.objects.create(
