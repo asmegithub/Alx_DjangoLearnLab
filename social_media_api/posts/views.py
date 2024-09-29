@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework import viewsets
 from rest_framework import permissions
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import filters
+from rest_framework import filters, generics
 from rest_framework.decorators import action
 
 from notifications.models import Notification
@@ -49,27 +49,23 @@ class PostViewSet(viewsets.ModelViewSet):
 # /posts/1/like
     @action(detail=True, methods=['get'])
     def like(self, request, pk=None):
-        post = Post.objects.get(pk=pk)
-        likes = Like.objects.filter(post=post)
-        user = request.user
-        existing_user = likes.filter(user=user)
+        post = generics.get_object_or_404(Post, pk=pk)
+        likes, created = Like.objects.get_or_create(
+            user=request.user, post=post)
 
-        if not existing_user.exists():
-            like = Like.objects.create(post=post, user=user)
+        if created:
             notification = Notification.objects.create(
-                recipient=post.author, actor=user, verb='liked', target=post)
-            like.save()
+                recipient=post.author, actor=request.user, verb='liked', target=post)
             notification.save()
-            print("you have liked this post")
-            serlizer = LikeSerializer(likes, many=True)
-            return Response(serlizer.data)
+            print(f'{request.user.username} just liked {post.title}')
+            return Response(f'{request.user.username} just liked {post.title}')
         else:
             return Response("you have already liked this post")
-
     # /posts/1/unlike
+
     @action(detail=True, methods=['get'])
     def unlike(self, request, pk=None):
-        post = Post.objects.get(pk=pk)
+        post = generics.get_object_or_404(Post, pk=pk)
         likes = Like.objects.filter(post=post)
         user = request.user
         existing_user = likes.filter(user=user)
