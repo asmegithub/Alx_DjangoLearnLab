@@ -52,12 +52,10 @@ class PostViewSet(viewsets.ModelViewSet):
         post = generics.get_object_or_404(Post, pk=pk)
         likes, created = Like.objects.get_or_create(
             user=request.user, post=post)
-
         if created:
             notification = Notification.objects.create(
                 recipient=post.author, actor=request.user, verb='liked', target=post)
             notification.save()
-            print(f'{request.user.username} just liked {post.title}')
             return Response(f'{request.user.username} just liked {post.title}')
         else:
             return Response("you have already liked this post")
@@ -66,15 +64,13 @@ class PostViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=['get'])
     def unlike(self, request, pk=None):
         post = generics.get_object_or_404(Post, pk=pk)
-        likes = Like.objects.filter(post=post)
         user = request.user
-        existing_user = likes.filter(user=user)
-        if existing_user.exists():
-            existing_user.delete()
+        likes = Like.objects.filter(post=post, user=user)
+        if likes.exists():
+            likes.delete()
             notification = Notification.objects.create(
                 recipient=post.author, actor=user, verb='unliked', target=post)
             notification.save()
-            print("you have unliked this post: ", notification)
             serializer = LikeSerializer(likes, many=True)
             return Response(serializer.data)
         else:
