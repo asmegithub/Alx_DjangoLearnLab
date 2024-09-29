@@ -47,7 +47,9 @@ class PostViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=['get'])
     def like(self, request, pk=None):
         post = generics.get_object_or_404(Post, pk=pk)
-        created = Like.objects.get_or_create(
+        likes, created = Like.objects.get_or_create(
+            user=request.user, post=post)
+        Like.objects.get_or_create(
             user=request.user, post=post)
         if created:
             notification = Notification.objects.create(
