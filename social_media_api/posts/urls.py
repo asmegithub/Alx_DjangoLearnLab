@@ -12,5 +12,5 @@ router.register('comments', CommentViewSet, basename='comments')
 
 urlpatterns = [
     path('', include(router.urls)),
-    path('feeds/', feeds, name='feeds')
+    path('feed/', feeds, name='feed')
 ]
