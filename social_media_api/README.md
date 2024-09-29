@@ -369,3 +369,117 @@ The User model has been updated to include the following fields:
 - `following`: A many-to-many relationship to represent users that this user is following.
 
 These fields allow for efficient management of follow relationships and feed generation.
+
+## Likes Management
+
+### 1. Like a Post
+
+- **Endpoint**: `POST /posts/{id}/like/`
+- **Description**: Like a post specified by `id`.
+- **Request Headers**:
+  - `Authorization`: Bearer token obtained during user authentication.
+- **Response Body**:
+
+  ```json
+  {
+    "detail": "Post liked successfully."
+  }
+  ```
+
+### 2. Unlike a Post
+
+- **Endpoint**: `POST /posts/{id}/unlike/`
+- **Description**: Unlike a post specified by `id`.
+- **Request Headers**:
+  - `Authorization`: Bearer token obtained during user authentication.
+- **Response Body**:
+
+  ```json
+  {
+    "detail": "Post unliked successfully."
+  }
+  ```
+
+### 3. List Likes on a Post
+
+- **Endpoint**: `GET /posts/{id}/likes/`
+- **Description**: Retrieve a list of users who liked a post specified by `id`.
+- **Request Headers**:
+  - `Authorization`: Bearer token obtained during user authentication.
+- **Response Body**:
+
+  ```json
+  [
+    {
+      "id": 1,
+      "username": "user1",
+      "email": "user1@example.com"
+    },
+    {
+      "id": 2,
+      "username": "user2",
+      "email": "user2@example.com"
+    }
+  ]
+  ```
+
+## Notifications Management
+
+### 1. List Notifications
+
+- **Endpoint**: `GET /notifications/`
+- **Description**: Retrieve a list of notifications for the authenticated user.
+- **Request Headers**:
+  - `Authorization`: Bearer token obtained during user authentication.
+- **Response Body**:
+
+  ```json
+  [
+    {
+      "id": 1,
+      "type": "like",
+      "message": "user1 liked your post.",
+      "created_at": "2024-09-28T08:20:53.957660Z",
+      "read": false
+    },
+    {
+      "id": 2,
+      "type": "follow",
+      "message": "user2 started following you.",
+      "created_at": "2024-09-29T10:15:30.123456Z",
+      "read": false
+    }
+  ]
+  ```
+
+### 2. Mark Notification as Read
+
+- **Endpoint**: `POST /notifications/{id}/read/`
+- **Description**: Mark a notification specified by `id` as read.
+- **Request Headers**:
+  - `Authorization`: Bearer token obtained during user authentication.
+- **Response Body**:
+
+  ```json
+  {
+    "detail": "Notification marked as read."
+  }
+  ```
+
+### 3. Delete Notification
+
+- **Endpoint**: `DELETE /notifications/{id}/`
+- **Description**: Delete a notification specified by `id`.
+- **Request Headers**:
+  - `Authorization`: Bearer token obtained during user authentication.
+- **Response Body**:
+
+  ```json
+  {
+    "detail": "Notification deleted successfully."
+  }
+  ```
+
+## Benefits of Likes and Notifications
+
+The likes and notifications systems enhance user engagement by providing immediate feedback and updates on user interactions. Likes allow users to express appreciation for content, fostering a sense of community. Notifications keep users informed about important activities, such as likes, comments, and follows, encouraging them to stay active on the platform.

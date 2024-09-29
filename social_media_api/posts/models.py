@@ -24,3 +24,16 @@ class Comment(models.Model):
         Post, on_delete=models.CASCADE, related_name='comments')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+
+class Like(models.Model):
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    # The unique_together attribute specifies a list of field names where each pair must be unique **
+    # . This is similar to the unique attribute, but it applies to multiple fields.
+
+    class Meta:
+        unique_together = ('user', 'post')

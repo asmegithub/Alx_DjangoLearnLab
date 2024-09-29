@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     # local apps
     'accounts',
     'posts',
+    'notifications',
     # third party apps
     'rest_framework',
     'rest_framework.authtoken',

@@ -6,8 +6,11 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters
 from rest_framework.decorators import action
 
-from .serializers import PostSerializer, CommentSerializer
-from .models import Post, Comment
+from notifications.models import Notification
+from .models import Like
+
+from .serializers import PostSerializer, CommentSerializer, LikeSerializer
+from .models import Post, Comment, Like
 from .permissions import IsOwnerOrReadOnly
 
 
@@ -28,9 +31,10 @@ class PostViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         # N.B auther is the name of the field in the Post model
         serializer.save(author=self.request.user)
+# posts/feed
 
     @action(detail=False, methods=['get'])
-    def feeds(self, request,):
+    def feed(self, request,):
         # get all the posts of the user and the users that the user is following
         user = request.user
         # feteching associated following users for the current user
@@ -41,6 +45,44 @@ class PostViewSet(viewsets.ModelViewSet):
         # Post.objects.filter(author__in=following_users).order_by", "following.all()
         serializer = self.get_serializer(posts, many=True)
         return Response(serializer.data)
+
+# /posts/1/like
+    @action(detail=True, methods=['get'])
+    def like(self, request, pk=None):
+        post = Post.objects.get(pk=pk)
+        likes = Like.objects.filter(post=post)
+        user = request.user
+        existing_user = likes.filter(user=user)
+
+        if not existing_user.exists():
+            like = Like.objects.create(post=post, user=user)
+            notification = Notification.objects.create(
+                recipient=post.author, actor=user, verb='liked', target=post)
+            like.save()
+            notification.save()
+            print("you have liked this post")
+            serlizer = LikeSerializer(likes, many=True)
+            return Response(serlizer.data)
+        else:
+            return Response("you have already liked this post")
+
+    # /posts/1/unlike
+    @action(detail=True, methods=['get'])
+    def unlike(self, request, pk=None):
+        post = Post.objects.get(pk=pk)
+        likes = Like.objects.filter(post=post)
+        user = request.user
+        existing_user = likes.filter(user=user)
+        if existing_user.exists():
+            existing_user.delete()
+            notification = Notification.objects.create(
+                recipient=post.author, actor=user, verb='unliked', target=post)
+            notification.save()
+            print("you have unliked this post: ", notification)
+            serializer = LikeSerializer(likes, many=True)
+            return Response(serializer.data)
+        else:
+            return Response("you have not liked this post")
 
 
 class CommentViewSet(viewsets.ModelViewSet):
@@ -53,3 +95,36 @@ class CommentViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         # N.B auther is the name of the field in the Comment model
         serializer.save(author=self.request.user)
+
+# this will be deleted later
+
+
+class LikeViewSet(viewsets.ModelViewSet):
+    queryset = Like.objects.all()
+    serializer_class = LikeSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+    @action(detail=True, methods=['get'])
+    def like(self, request, pk=None):
+        post = Post.objects.get(pk=pk)
+        likes = Like.objects.filter(post=post)
+        user = request.user
+        existing_user = likes.filter(user=user)
+
+        if existing_user.exists():
+            existing_user.delete()
+            notification = Notification.objects.create(
+                recipient=post.author, actor=user, verb='unliked', target=post)
+            notification.save()
+            print("you have unliked this post: ", notification)
+            serializer = LikeSerializer(likes, many=True)
+            return Response(serializer.data)
+        else:
+            like = Like.objects.create(post=post, user=user)
+            notification = Notification.objects.create(
+                recipient=post.author, actor=user, verb='liked', target=post)
+            like.save()
+            notification.save()
+            print("you have liked this post")
+            serlizer = LikeSerializer(likes, many=True)
+            return Response(serlizer.data)
