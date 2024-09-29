@@ -19,9 +19,6 @@ class PostViewSet(viewsets.ModelViewSet):
     serializer_class = PostSerializer
     permission_classes = [
         permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
-    # # filtering by title and content
-    # filter_backends = [DjangoFilterBackend]
-    # filterset_fields = ['title', 'content']
 
     # # search by title and content
     filter_backends = [filters.SearchFilter]
@@ -50,7 +47,7 @@ class PostViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=['get'])
     def like(self, request, pk=None):
         post = generics.get_object_or_404(Post, pk=pk)
-        likes, created = Like.objects.get_or_create(
+        created = Like.objects.get_or_create(
             user=request.user, post=post)
         if created:
             notification = Notification.objects.create(
