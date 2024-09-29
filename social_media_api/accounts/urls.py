@@ -7,7 +7,6 @@ from .views import register, LoginView, ProfileDetailView, CustomUserViewSet, fo
 
 # follow_user = CustomUserViewSet.as_view({'post': 'follow_user'})
 # unfollow_user = CustomUserViewSet.as_view({'post': 'unfollow_user'})
-users = CustomUserViewSet.as_view({'get': 'list'})
 
 urlpatterns = [
     # routing for accounts
@@ -15,7 +14,6 @@ urlpatterns = [
     path('login/', LoginView.as_view(), name='login'),
     path('logout/', LogoutView.as_view(), name='logout'),
     path('profile/', ProfileDetailView.as_view(), name='profile'),
-    path('users/', users, name='users'),
     # routing for follow and unfollow user
     path('follow/<int:user_id>/', follow_user, name='follow_user'),
     path('unfollow/<int:user_id>/', unfollow_user, name='unfollow_user'),

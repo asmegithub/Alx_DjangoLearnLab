@@ -5,8 +5,9 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
+from rest_framework import permissions
 from rest_framework.decorators import api_view
+from rest_framework import generics
 
 from .serializers import CustomUserSerializer
 from .forms import CustomUserCreationForm
@@ -59,10 +60,10 @@ def unfollow_user(request, user_id=None):
     return Response({'status': f'You unfollowed {user_to_unfollow.username} !'})
 
 
-class CustomUserViewSet(viewsets.ModelViewSet):
+class CustomUserViewSet(generics.GenericAPIView):
     queryset = CustomUser.objects.all()
     serializer_class = CustomUserSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated]
 
     # @action(detail=True, methods=['get'])
     # def follow_user(self, request, pk=None):
