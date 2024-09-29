@@ -12,4 +12,4 @@ class IsOwnerOrReadOnly(permissions.BasePermission):
             return True
 
         # Allow write permissions (POST, PUT, DELETE) only for the owner.
-        return obj.author == request.user or True
+        return obj.author == request.user
